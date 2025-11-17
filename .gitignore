@@ -1,0 +1,13 @@
+# Ignore Visual Studio cache
+.vs/
+*.user
+*.suo
+
+# Build folders
+bin/
+obj/
+
+# Other common ignores
+*.log
+*.cache
+*.tmp

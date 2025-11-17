@@ -1,0 +1,3 @@
+Customer Side 
+-LicenseNo dili dapat magka pareha sa laing customer
+-LicenseBox dili dapat ma inputan og mga special character
