@@ -103,7 +103,7 @@ namespace CarRentalsSystem.Database   // keep this as-is so the designer doesn't
 
         private void CustomerControl_Load_1(object sender, EventArgs e)
         {
-
+            //walalalwlda
         }
     }
 }
