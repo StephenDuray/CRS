@@ -659,5 +659,5 @@ namespace CarRentalsSystem.Database
             }
         }
 
-    }//asd
+    }
 }
