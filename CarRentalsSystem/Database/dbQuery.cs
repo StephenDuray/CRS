@@ -3,6 +3,7 @@ using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Management.Instrumentation;
 using System.Text;
@@ -60,7 +61,7 @@ namespace CarRentalsSystem.Database
             }
         }
         // Add Vehicle
-        public static bool AddVehicle(string brand, string model, string vehicleType, string status,string color, double dailyRate, int currentMileage, byte[] vehicleImage,string plateNo)
+        public static bool AddVehicle(string brand, string model, string vehicleType, string status, string color, double dailyRate, int currentMileage, byte[] vehicleImage, string plateNo)
         {
             string query = @" INSERT INTO vehicle (brand, model, vehicleType,status, color, dailyRate, currentMileage, vehicleImage,plateNo)VALUES (@brand, @model, @vehicleType,@status, @color, @dailyRate, @currentMileage, @vehicleImage,@plateNo);
     ";
@@ -220,7 +221,7 @@ namespace CarRentalsSystem.Database
         //Search Customer
         public static DataTable SearchCustomers(string keyword)
         {
-                string sql = @"
+            string sql = @"
                     SELECT customerID, name, dob, gender, address, licenseNo
                     FROM customer
                     WHERE name LIKE @kw
@@ -486,7 +487,7 @@ namespace CarRentalsSystem.Database
                 int? mileageAllowance)
         {
             // Adjust table/column names if different in your DB
-                string sql = @"
+            string sql = @"
                 INSERT INTO RentedVehicles
                     (contractID, vehicleID, odometerStart, odometerEnd, mileageAllowance, totalCost)
                 VALUES
@@ -519,6 +520,142 @@ namespace CarRentalsSystem.Database
 
                 var count = Convert.ToInt32(cmd.ExecuteScalar());
                 return count > 0;
+            }
+        }
+       public static bool AddPayment(int contractId, double amount, DateTime paymentDate, string paymentMethod)
+{
+    string query = @"INSERT INTO payment(contractID, amount, paymentDate, paymentMethod) 
+                     VALUES(@contractID, @amount, @paymentDate, @paymentMethod)";
+
+    using (MySqlCommand cmd = new MySqlCommand(query, Connection))
+    {
+        cmd.Parameters.Add("@contractID", MySqlDbType.Int32).Value = contractId;   // match name
+        cmd.Parameters.Add("@amount", MySqlDbType.Double).Value = amount;
+        cmd.Parameters.Add("@paymentDate", MySqlDbType.Date).Value = paymentDate;
+        cmd.Parameters.Add("@paymentMethod", MySqlDbType.VarChar).Value = paymentMethod; // correct value
+
+        return cmd.ExecuteNonQuery() > 0;
+    }
+}
+
+        //public static double GetFullToFullTotal(int contractId)
+        //{
+        //    const string sql = @"
+        //            SELECT 
+        //                v.dailyRate,
+        //                DATEDIFF(
+        //                    COALESCE(c.actualReturnDate, c.expectedReturnDate),
+        //                    c.bookingDate
+        //                ) + 1 AS daysCount
+        //            FROM contracts c
+        //            JOIN rentedvehicles rv ON rv.contractID = c.contractID
+        //            JOIN vehicle v         ON v.vehicleID = rv.vehicleID
+        //            JOIN rentalpolicy rp   ON rp.rentalpolicyID = c.policyID
+        //            WHERE c.contractID = @contractID
+        //              AND rp.policyName = 'Full to Full'
+        //            LIMIT 1;
+        //        ";
+
+        //    using (var cmd = new MySqlCommand(sql, Connection))
+        //    {
+        //        cmd.Parameters.Add("@contractID", MySqlDbType.Int32).Value = contractId;
+
+        //        using (var rdr = cmd.ExecuteReader())
+        //        {
+        //            if (!rdr.Read())
+        //            {
+        //                // not a Full to Full contract or no row found
+        //                return 0;
+        //            }
+
+        //            double dailyRate = rdr.GetDouble(rdr.GetOrdinal("dailyRate"));
+        //            int days = rdr.GetInt32(rdr.GetOrdinal("daysCount"));
+
+        //            return dailyRate * days;
+        //        }
+        //    }
+        //}
+        public static double GetFullToFullTotal(int contractId)
+        {
+            const string sql = @"
+        SELECT 
+            SUM(
+                v.dailyRate * 
+                (DATEDIFF(
+                    COALESCE(c.actualReturnDate, c.expectedReturnDate),
+                    c.bookingDate
+                ) + 1)
+            ) AS totalAmount
+        FROM contracts c
+        JOIN rentedvehicles rv ON rv.contractID = c.contractID
+        JOIN vehicle v         ON v.vehicleID   = rv.vehicleID
+        JOIN rentalpolicy rp   ON rp.rentalpolicyID = c.policyID
+        WHERE c.contractID = @contractID
+          AND rp.policyname = 'Full to Full';";
+
+            using (var cmd = new MySqlCommand(sql, Connection))
+            {
+                cmd.Parameters.Add("@contractID", MySqlDbType.Int32).Value = contractId;
+
+                object result = cmd.ExecuteScalar();
+
+                if (result == null || result == DBNull.Value)
+                    return 0;
+
+                return Convert.ToDouble(result);
+            }
+        }
+
+        public static bool ContractHasAssignedVehicle(int contractId)
+        {
+            // Use your real table name - here I used RentedVehicles like in AddRentedVehicle
+            string sql = @"
+        SELECT COUNT(*) 
+        FROM RentedVehicles
+        WHERE contractID = @contractID";
+
+            using (var cmd = new MySqlCommand(sql, Connection))
+            {
+                cmd.Parameters.Add("@contractID", MySqlDbType.Int32).Value = contractId;
+
+                object result = cmd.ExecuteScalar();
+                int count = (result != null && result != DBNull.Value)
+                            ? Convert.ToInt32(result)
+                            : 0;
+
+                return count > 0;
+            }
+        }
+        public static bool ContractHasPayment(int contractId)
+        {
+            string sql = @"SELECT COUNT(*) 
+                   FROM payment
+                   WHERE contractID = @contractID";
+
+            using (var cmd = new MySqlCommand(sql, Connection))
+            {
+                cmd.Parameters.Add("@contractID", MySqlDbType.Int32).Value = contractId;
+
+                object result = cmd.ExecuteScalar();
+                int count = (result != null && result != DBNull.Value)
+                            ? Convert.ToInt32(result)
+                            : 0;
+
+                return count > 0;   // true = already has at least one payment
+            }
+        }
+        public static bool UpdateVehicleStatus(int vehicleId, string newStatus)
+        {
+            string sql = @"UPDATE vehicle
+                   SET status = @status
+                   WHERE vehicleID = @vehicleID";
+
+            using (var cmd = new MySqlCommand(sql, Connection))
+            {
+                cmd.Parameters.Add("@status", MySqlDbType.VarChar).Value = newStatus;
+                cmd.Parameters.Add("@vehicleID", MySqlDbType.Int32).Value = vehicleId;
+
+                return cmd.ExecuteNonQuery() > 0;
             }
         }
 

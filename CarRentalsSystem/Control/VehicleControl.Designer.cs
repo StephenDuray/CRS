@@ -75,7 +75,7 @@
             this.guna2TextBox1.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.guna2TextBox1.ForeColor = System.Drawing.Color.Gray;
             this.guna2TextBox1.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
-            this.guna2TextBox1.Location = new System.Drawing.Point(38, 150);
+            this.guna2TextBox1.Location = new System.Drawing.Point(29, 51);
             this.guna2TextBox1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.guna2TextBox1.Name = "guna2TextBox1";
             this.guna2TextBox1.PlaceholderForeColor = System.Drawing.Color.Gray;
@@ -98,7 +98,7 @@
             this.guna2ComboBox3.ItemHeight = 30;
             this.guna2ComboBox3.Items.AddRange(new object[] {
             "Brand"});
-            this.guna2ComboBox3.Location = new System.Drawing.Point(259, 150);
+            this.guna2ComboBox3.Location = new System.Drawing.Point(250, 51);
             this.guna2ComboBox3.Name = "guna2ComboBox3";
             this.guna2ComboBox3.Size = new System.Drawing.Size(112, 36);
             this.guna2ComboBox3.StartIndex = 0;
@@ -121,7 +121,7 @@
             "Available",
             "Returned",
             "Rented"});
-            this.guna2ComboBox1.Location = new System.Drawing.Point(384, 150);
+            this.guna2ComboBox1.Location = new System.Drawing.Point(375, 51);
             this.guna2ComboBox1.Name = "guna2ComboBox1";
             this.guna2ComboBox1.Size = new System.Drawing.Size(112, 36);
             this.guna2ComboBox1.StartIndex = 0;
@@ -143,7 +143,7 @@
             this.button1.HoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(106)))), ((int)(((byte)(255)))));
             this.button1.HoverState.FillColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(106)))), ((int)(((byte)(255)))));
             this.button1.Image = ((System.Drawing.Image)(resources.GetObject("button1.Image")));
-            this.button1.Location = new System.Drawing.Point(1008, 150);
+            this.button1.Location = new System.Drawing.Point(999, 51);
             this.button1.Margin = new System.Windows.Forms.Padding(2);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(98, 37);
@@ -320,10 +320,10 @@
             this.flowLayoutPanel1.Controls.Add(this.panel11);
             this.flowLayoutPanel1.Controls.Add(this.panel9);
             this.flowLayoutPanel1.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-            this.flowLayoutPanel1.Location = new System.Drawing.Point(36, 238);
+            this.flowLayoutPanel1.Location = new System.Drawing.Point(29, 113);
             this.flowLayoutPanel1.Margin = new System.Windows.Forms.Padding(2);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(1151, 1020);
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(1051, 1020);
             this.flowLayoutPanel1.TabIndex = 73;
             this.flowLayoutPanel1.WrapContents = false;
             // 
@@ -340,7 +340,7 @@
             this.Controls.Add(this.guna2TextBox1);
             this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "VehicleControl";
-            this.Size = new System.Drawing.Size(1117, 622);
+            this.Size = new System.Drawing.Size(1100, 622);
             this.Load += new System.EventHandler(this.VehicleControl_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox12)).EndInit();
             this.panel12.ResumeLayout(false);

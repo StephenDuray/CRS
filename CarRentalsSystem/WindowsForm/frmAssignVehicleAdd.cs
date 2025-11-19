@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data;
 using System.Drawing;
+using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using CarRentalsSystem.Database;
 
@@ -372,6 +373,7 @@ namespace CarRentalsSystem.WindowsForm
             }
 
             // 5. DB INSERT
+            // 5. DB INSERT
             bool ok = dbQuery.AddRentedVehicle(
                 contractId,
                 vehicleId,
@@ -381,10 +383,22 @@ namespace CarRentalsSystem.WindowsForm
 
             if (ok)
             {
+                // 🔥 set vehicle status to 'Rented'
+                bool statusOk = dbQuery.UpdateVehicleStatus(vehicleId, "Rented");
+                if (!statusOk)
+                {
+                    MessageBox.Show("Vehicle assigned, but failed to update vehicle status.",
+                                    "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+
                 MessageBox.Show("Vehicle successfully assigned to contract.",
                                 "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                // CLEAR CONTROLS
+                frmPayment frmPayment = new frmPayment();
+                frmPayment.ShowDialog();
+                this.Close();
+
+                // (these clears are technically not needed after Close(), but ok to leave)
                 guna2ComboBox1.SelectedIndex = -1;
                 guna2TextBox1.Clear();
                 guna2TextBox2.Clear();

@@ -81,7 +81,7 @@ namespace CarRentalsSystem.WindowsForm
         }
         public void showAssignVehicle()
         {
-            label4.Text = "Assign Vehicle";
+            label4.Text = "Manage your rental";
 
             panel2.Controls.Clear();
             assignVehicle = new AssignVehicle
@@ -89,7 +89,7 @@ namespace CarRentalsSystem.WindowsForm
                 Dock = DockStyle.Fill
             };
             panel2.Controls.Add(assignVehicle);
-            label1.Text = "Assign Vehicle";
+            label1.Text = "Rental";
         }
         private void ShowVehicles()
         {
@@ -210,6 +210,12 @@ namespace CarRentalsSystem.WindowsForm
         private void guna2Button2_Click(object sender, EventArgs e)
         {
             showAssignVehicle();
+        }
+
+        private void paymentDepoButton_Click(object sender, EventArgs e)
+        {
+            frmPayment frmPayment = new frmPayment();
+            frmPayment.ShowDialog();
         }
     }
 }

@@ -169,6 +169,12 @@
     <Compile Include="WindowsForm\frmAssignVehicleAdd.Designer.cs">
       <DependentUpon>frmAssignVehicleAdd.cs</DependentUpon>
     </Compile>
+    <Compile Include="WindowsForm\frmDeposit.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WindowsForm\frmDeposit.Designer.cs">
+      <DependentUpon>frmDeposit.cs</DependentUpon>
+    </Compile>
     <Compile Include="WindowsForm\frmLogin.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -185,6 +191,12 @@
     </Compile>
     <Compile Include="Factory\IModule.cs" />
     <Compile Include="Factory\Vehicle.cs" />
+    <Compile Include="WindowsForm\frmPayment.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WindowsForm\frmPayment.Designer.cs">
+      <DependentUpon>frmPayment.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="Control\AddVehicleControl.resx">
       <DependentUpon>AddVehicleControl.cs</DependentUpon>
     </EmbeddedResource>
@@ -230,6 +242,9 @@
     </Compile>
     <EmbeddedResource Include="WindowsForm\frmMainDashboard.resx">
       <DependentUpon>frmMainDashboard.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WindowsForm\frmPayment.resx">
+      <DependentUpon>frmPayment.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">

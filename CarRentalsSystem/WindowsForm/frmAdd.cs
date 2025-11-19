@@ -306,6 +306,10 @@ namespace CarRentalsSystem
                 {
                     MessageBox.Show("Customer and contact(s) added successfully.",
                                     "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                    frmAddContract frmAddContract = new frmAddContract();
+                    frmAddContract.Show();
+                    this.Hide();
                 }
 
                 // ============================
