@@ -79,9 +79,7 @@ namespace CarRentalsSystem.Database   // keep this as-is so the designer doesn't
                 dataGridView1.Columns["licenseNo"].HeaderText = "License Number";
         }
 
-        // ============================
-        //  ADD CUSTOMER BUTTON
-        // ============================
+       
         private void button1_Click_1(object sender, EventArgs e)
         {
             using (var addCustomerForm = new frmAdd())
@@ -105,7 +103,7 @@ namespace CarRentalsSystem.Database   // keep this as-is so the designer doesn't
 
         private void CustomerControl_Load_1(object sender, EventArgs e)
         {
-
+            //walalalwlda
         }
     }
 }
