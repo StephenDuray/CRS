@@ -67,6 +67,7 @@
     </Reference>
     <Reference Include="System.Core" />
     <Reference Include="System.Design" />
+    <Reference Include="System.DirectoryServices" />
     <Reference Include="System.IO.Pipelines, Version=5.0.0.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.IO.Pipelines.5.0.2\lib\net461\System.IO.Pipelines.dll</HintPath>
     </Reference>
@@ -129,6 +130,12 @@
     </Compile>
     <Compile Include="Control\DashboardControl.Designer.cs">
       <DependentUpon>DashboardControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Control\ReturnControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Control\ReturnControl.Designer.cs">
+      <DependentUpon>ReturnControl.cs</DependentUpon>
     </Compile>
     <Compile Include="Control\VehicleControl.cs">
       <SubType>UserControl</SubType>
@@ -197,6 +204,12 @@
     <Compile Include="WindowsForm\frmPayment.Designer.cs">
       <DependentUpon>frmPayment.cs</DependentUpon>
     </Compile>
+    <Compile Include="WindowsForm\frmReturn.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WindowsForm\frmReturn.Designer.cs">
+      <DependentUpon>frmReturn.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="Control\AddVehicleControl.resx">
       <DependentUpon>AddVehicleControl.cs</DependentUpon>
     </EmbeddedResource>
@@ -212,6 +225,9 @@
     <EmbeddedResource Include="Control\DashboardControl.resx">
       <DependentUpon>DashboardControl.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Control\ReturnControl.resx">
+      <DependentUpon>ReturnControl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Control\VehicleControl.resx">
       <DependentUpon>VehicleControl.cs</DependentUpon>
     </EmbeddedResource>
@@ -226,6 +242,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="WindowsForm\frmAssignVehicleAdd.resx">
       <DependentUpon>frmAssignVehicleAdd.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WindowsForm\frmDeposit.resx">
+      <DependentUpon>frmDeposit.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="WindowsForm\frmLogin.resx">
       <DependentUpon>frmLogin.cs</DependentUpon>
@@ -245,6 +264,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="WindowsForm\frmPayment.resx">
       <DependentUpon>frmPayment.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WindowsForm\frmReturn.resx">
+      <DependentUpon>frmReturn.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">

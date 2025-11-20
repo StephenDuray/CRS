@@ -13,7 +13,8 @@ namespace CarRentalsSystem.WindowsForm
         private CustomerControl customerControl;
         private AddVehicleControl addVehicleControl;
         private ContractControl contractsControl;
-        private AssignVehicle assignVehicle; // <- your contracts usercontrol
+        private AssignVehicle assignVehicle;
+        private ReturnControl returnControl;// <- your contracts usercontrol
 
         public frmMainDashboard()
         {
@@ -61,12 +62,12 @@ namespace CarRentalsSystem.WindowsForm
             view.module(this);
 
             label1.Text = "Car Rental Dashboard";
-            label4.Text = string.Empty;
+           // label4.Text = string.Empty;
         }
 
         private void ShowCustomers()
         {
-            label4.Text = "Manage customers and their rental activity.";
+            //label4.Text = "Manage customers and their rental activity.";
 
             panel2.Controls.Clear();
 
@@ -81,7 +82,7 @@ namespace CarRentalsSystem.WindowsForm
         }
         public void showAssignVehicle()
         {
-            label4.Text = "Manage your rental";
+            //label4.Text = "Manage your rental";
 
             panel2.Controls.Clear();
             assignVehicle = new AssignVehicle
@@ -93,7 +94,7 @@ namespace CarRentalsSystem.WindowsForm
         }
         private void ShowVehicles()
         {
-            label4.Text = "Manage your fleet, monitor availability, and keep track of vehicle performance";
+           // label4.Text = "Manage your fleet, monitor availability, and keep track of vehicle performance";
 
             panel2.Controls.Clear();
 
@@ -109,7 +110,7 @@ namespace CarRentalsSystem.WindowsForm
 
         private void ShowContracts()
         {
-            label4.Text = "Manage contracts and rental records.";
+           // label4.Text = "Manage contracts and rental records.";
 
             panel2.Controls.Clear();
 
@@ -196,7 +197,7 @@ namespace CarRentalsSystem.WindowsForm
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            label3.Text = DateTime.Now.ToString("hh:mm tt");                 // Time
+            label3.Text = DateTime.Now.ToString("hh:mm:ss tt").ToUpper();       
             label5.Text = DateTime.Now.ToString("dddd, MMMM dd, yyyy");      // Date
         }
 
@@ -216,6 +217,25 @@ namespace CarRentalsSystem.WindowsForm
         {
             frmPayment frmPayment = new frmPayment();
             frmPayment.ShowDialog();
+        }
+
+        private void label8_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label7_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void guna2Button3_Click(object sender, EventArgs e)
+        {
+            using (var frm = new frmReturn())   // <-- use the Form name here
+            {
+                frm.ShowDialog();               // modal
+                                                // or frm.Show();               // non-modal
+            }
         }
     }
 }

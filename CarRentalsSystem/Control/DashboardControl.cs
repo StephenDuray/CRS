@@ -22,11 +22,11 @@ namespace CarRentalsSystem.Control
 
         private void DashboardControl_Load(object sender, EventArgs e)
         {
-            
-            this.AutoScrollMinSize = new Size(
-                0,
-                dataGridView1.Bottom + 20  // 20px extra padding
-            );
+          //  
+           // this.AutoScrollMinSize = new Size(
+             //   0,
+             //   dataGridView1.Bottom + 20  // 20px extra padding
+          //  );
 
             LoadDashboardStats();
         }
@@ -58,10 +58,7 @@ namespace CarRentalsSystem.Control
         }
 
 
-        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-
-        }
+      
         //Total Cars
         private void label8_Click(object sender, EventArgs e)
         {
@@ -79,6 +76,16 @@ namespace CarRentalsSystem.Control
         }
         //Available Cars
         private void label2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void guna2Panel3_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void label17_Click(object sender, EventArgs e)
         {
 
         }

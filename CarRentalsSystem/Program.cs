@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CarRentalsSystem.WindowsForm;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -8,9 +9,7 @@ namespace CarRentalsSystem
 {
     internal static class Program
     {
-        /// <summary>
-        /// The main entry point for the application.
-        /// </summary>
+      
         [STAThread]
         static void Main()
         {

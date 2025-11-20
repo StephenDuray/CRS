@@ -24,11 +24,44 @@ namespace CarRentalsSystem
         public frmAdd(FormMode mode)
         {
             InitializeComponent();
-           // _mode = mode;
-           // ConfigureFor(mode);
-            
-
+            this.FormBorderStyle = FormBorderStyle.None;
+            this.BackColor = Color.White;
+            // _mode = mode;
+            // ConfigureFor(mode);
         }
+
+
+
+        int borderRadius = 25;
+        int borderSize = 2;
+        Color borderColor = Color.FromArgb(0, 45, 139);
+
+        protected override void OnPaint(PaintEventArgs e)
+        {
+            base.OnPaint(e);
+
+            Rectangle rect = new Rectangle(0, 0, this.Width - 1, this.Height - 1);
+
+            using (GraphicsPath path = new GraphicsPath())
+            using (Pen pen = new Pen(borderColor, borderSize))
+            {
+                e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
+
+                int d = borderRadius * 2;
+
+                path.AddArc(rect.X, rect.Y, d, d, 180, 90);
+                path.AddArc(rect.Right - d, rect.Y, d, d, 270, 90);
+                path.AddArc(rect.Right - d, rect.Bottom - d, d, d, 0, 90);
+                path.AddArc(rect.X, rect.Bottom - d, d, d, 90, 90);
+                path.CloseFigure();
+
+                this.Region = new Region(path);
+                pen.Alignment = PenAlignment.Inset;
+                e.Graphics.DrawPath(pen, path);
+            }
+        }
+
+
 
         private void ConfigureFor(FormMode mode)
         {

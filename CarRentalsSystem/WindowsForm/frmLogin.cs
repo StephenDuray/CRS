@@ -29,7 +29,21 @@ namespace CarRentalsSystem
             }
         }
 
-        private void button1_Click(object sender, EventArgs e)
+      
+        private void frmLogin_Load(object sender, EventArgs e)
+        {
+            int radius = 80;
+
+            GraphicsPath path = new GraphicsPath();
+            path.AddArc(0, 0, radius, radius, 180, 90);
+            path.AddArc(this.Width - radius, 0, radius, radius, 270, 90);
+            path.AddArc(this.Width - radius, this.Height - radius, radius, radius, 0, 90);
+            path.AddArc(0, this.Height - radius, radius, radius, 90, 90);
+            path.CloseAllFigures();
+            this.Region = new Region(path);
+        }
+
+        private void button1_Click_1(object sender, EventArgs e)
         {
             string username = textBox1.Text.Trim();
             string password = textBox2.Text.Trim();
@@ -57,4 +71,5 @@ namespace CarRentalsSystem
 
         }
     }
-}
+   }
+

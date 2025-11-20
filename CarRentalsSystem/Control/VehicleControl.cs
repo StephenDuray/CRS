@@ -15,14 +15,13 @@ namespace CarRentalsSystem.Control
             InitializeComponent();
             this.Load += VehicleControl_Load;
 
-            // ❌ we no longer need to force 5-per-row using SizeChanged
-            // this.flowLayoutPanel1.SizeChanged += flowLayoutPanel1_SizeChanged;
+          
         }
 
         private void VehicleControl_Load(object sender, EventArgs e)
         {
-            flowLayoutPanel1.AutoScroll = true;
-            flowLayoutPanel1.FlowDirection = FlowDirection.LeftToRight;
+            //flowLayoutPanel1.AutoScroll = true;
+          //  flowLayoutPanel1.FlowDirection = FlowDirection.LeftToRight;
             flowLayoutPanel1.WrapContents = true;
 
             // ❌ REMOVE THESE — they break the layout
