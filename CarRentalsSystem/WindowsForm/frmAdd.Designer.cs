@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmAdd));
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.radioButton2 = new System.Windows.Forms.RadioButton();
             this.genderLabel = new System.Windows.Forms.Label();
@@ -50,6 +51,8 @@
             this.addPictureButton = new Guna.UI2.WinForms.Guna2GradientButton();
             this.label2 = new System.Windows.Forms.Label();
             this.guna2ControlBox2 = new Guna.UI2.WinForms.Guna2ControlBox();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // openFileDialog1
@@ -62,10 +65,10 @@
             this.radioButton2.BackColor = System.Drawing.Color.Transparent;
             this.radioButton2.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.radioButton2.ForeColor = System.Drawing.Color.Navy;
-            this.radioButton2.Location = new System.Drawing.Point(629, 280);
-            this.radioButton2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.radioButton2.Location = new System.Drawing.Point(472, 228);
+            this.radioButton2.Margin = new System.Windows.Forms.Padding(2);
             this.radioButton2.Name = "radioButton2";
-            this.radioButton2.Size = new System.Drawing.Size(93, 29);
+            this.radioButton2.Size = new System.Drawing.Size(75, 24);
             this.radioButton2.TabIndex = 9;
             this.radioButton2.TabStop = true;
             this.radioButton2.Text = "Female";
@@ -77,9 +80,10 @@
             this.genderLabel.BackColor = System.Drawing.Color.Transparent;
             this.genderLabel.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.genderLabel.ForeColor = System.Drawing.Color.Navy;
-            this.genderLabel.Location = new System.Drawing.Point(425, 222);
+            this.genderLabel.Location = new System.Drawing.Point(319, 180);
+            this.genderLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.genderLabel.Name = "genderLabel";
-            this.genderLabel.Size = new System.Drawing.Size(80, 28);
+            this.genderLabel.Size = new System.Drawing.Size(65, 21);
             this.genderLabel.TabIndex = 2;
             this.genderLabel.Text = "Gender";
             // 
@@ -93,13 +97,13 @@
             this.dateTimePicker1.FocusedColor = System.Drawing.Color.White;
             this.dateTimePicker1.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.dateTimePicker1.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dateTimePicker1.Location = new System.Drawing.Point(37, 263);
-            this.dateTimePicker1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.dateTimePicker1.Location = new System.Drawing.Point(28, 214);
+            this.dateTimePicker1.Margin = new System.Windows.Forms.Padding(2);
             this.dateTimePicker1.MaxDate = new System.DateTime(9998, 12, 31, 0, 0, 0, 0);
             this.dateTimePicker1.MinDate = new System.DateTime(1753, 1, 1, 0, 0, 0, 0);
             this.dateTimePicker1.Name = "dateTimePicker1";
             this.dateTimePicker1.ShowUpDown = true;
-            this.dateTimePicker1.Size = new System.Drawing.Size(345, 48);
+            this.dateTimePicker1.Size = new System.Drawing.Size(259, 39);
             this.dateTimePicker1.TabIndex = 51;
             this.dateTimePicker1.Value = new System.DateTime(2025, 10, 8, 16, 57, 25, 418);
             // 
@@ -109,9 +113,10 @@
             this.dobLabel.BackColor = System.Drawing.Color.Transparent;
             this.dobLabel.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.dobLabel.ForeColor = System.Drawing.Color.Navy;
-            this.dobLabel.Location = new System.Drawing.Point(32, 222);
+            this.dobLabel.Location = new System.Drawing.Point(24, 180);
+            this.dobLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.dobLabel.Name = "dobLabel";
-            this.dobLabel.Size = new System.Drawing.Size(140, 28);
+            this.dobLabel.Size = new System.Drawing.Size(109, 21);
             this.dobLabel.TabIndex = 1;
             this.dobLabel.Text = "Date Of Birth";
             // 
@@ -121,9 +126,10 @@
             this.addresslabel.BackColor = System.Drawing.Color.Transparent;
             this.addresslabel.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.addresslabel.ForeColor = System.Drawing.Color.Navy;
-            this.addresslabel.Location = new System.Drawing.Point(32, 333);
+            this.addresslabel.Location = new System.Drawing.Point(24, 271);
+            this.addresslabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.addresslabel.Name = "addresslabel";
-            this.addresslabel.Size = new System.Drawing.Size(87, 28);
+            this.addresslabel.Size = new System.Drawing.Size(70, 21);
             this.addresslabel.TabIndex = 3;
             this.addresslabel.Text = "Address";
             // 
@@ -133,9 +139,10 @@
             this.PhoneNoLabel.BackColor = System.Drawing.Color.Transparent;
             this.PhoneNoLabel.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.PhoneNoLabel.ForeColor = System.Drawing.Color.Navy;
-            this.PhoneNoLabel.Location = new System.Drawing.Point(32, 441);
+            this.PhoneNoLabel.Location = new System.Drawing.Point(24, 358);
+            this.PhoneNoLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.PhoneNoLabel.Name = "PhoneNoLabel";
-            this.PhoneNoLabel.Size = new System.Drawing.Size(215, 28);
+            this.PhoneNoLabel.Size = new System.Drawing.Size(175, 21);
             this.PhoneNoLabel.TabIndex = 14;
             this.PhoneNoLabel.Text = "Phone No. (Required)";
             // 
@@ -155,13 +162,13 @@
             this.addressBox.ForeColor = System.Drawing.Color.Black;
             this.addressBox.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
             this.addressBox.HoverState.ForeColor = System.Drawing.Color.Black;
-            this.addressBox.Location = new System.Drawing.Point(37, 371);
-            this.addressBox.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.addressBox.Location = new System.Drawing.Point(28, 301);
+            this.addressBox.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this.addressBox.Name = "addressBox";
             this.addressBox.PlaceholderForeColor = System.Drawing.Color.Gray;
             this.addressBox.PlaceholderText = "Enter address";
             this.addressBox.SelectedText = "";
-            this.addressBox.Size = new System.Drawing.Size(735, 48);
+            this.addressBox.Size = new System.Drawing.Size(551, 39);
             this.addressBox.TabIndex = 58;
             // 
             // radioButton1
@@ -170,10 +177,10 @@
             this.radioButton1.BackColor = System.Drawing.Color.Transparent;
             this.radioButton1.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.radioButton1.ForeColor = System.Drawing.Color.Navy;
-            this.radioButton1.Location = new System.Drawing.Point(502, 277);
-            this.radioButton1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.radioButton1.Location = new System.Drawing.Point(376, 225);
+            this.radioButton1.Margin = new System.Windows.Forms.Padding(2);
             this.radioButton1.Name = "radioButton1";
-            this.radioButton1.Size = new System.Drawing.Size(75, 29);
+            this.radioButton1.Size = new System.Drawing.Size(60, 24);
             this.radioButton1.TabIndex = 8;
             this.radioButton1.TabStop = true;
             this.radioButton1.Text = "Male";
@@ -195,13 +202,13 @@
             this.PhoneNoBox.ForeColor = System.Drawing.Color.Black;
             this.PhoneNoBox.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
             this.PhoneNoBox.HoverState.ForeColor = System.Drawing.Color.Black;
-            this.PhoneNoBox.Location = new System.Drawing.Point(37, 487);
-            this.PhoneNoBox.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.PhoneNoBox.Location = new System.Drawing.Point(28, 396);
+            this.PhoneNoBox.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this.PhoneNoBox.Name = "PhoneNoBox";
             this.PhoneNoBox.PlaceholderForeColor = System.Drawing.Color.Gray;
             this.PhoneNoBox.PlaceholderText = "Enter a phone number";
             this.PhoneNoBox.SelectedText = "";
-            this.PhoneNoBox.Size = new System.Drawing.Size(345, 48);
+            this.PhoneNoBox.Size = new System.Drawing.Size(259, 39);
             this.PhoneNoBox.TabIndex = 59;
             // 
             // licenseLabel
@@ -210,9 +217,10 @@
             this.licenseLabel.BackColor = System.Drawing.Color.Transparent;
             this.licenseLabel.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.licenseLabel.ForeColor = System.Drawing.Color.Navy;
-            this.licenseLabel.Location = new System.Drawing.Point(425, 121);
+            this.licenseLabel.Location = new System.Drawing.Point(319, 98);
+            this.licenseLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.licenseLabel.Name = "licenseLabel";
-            this.licenseLabel.Size = new System.Drawing.Size(115, 28);
+            this.licenseLabel.Size = new System.Drawing.Size(93, 21);
             this.licenseLabel.TabIndex = 4;
             this.licenseLabel.Text = "License No";
             // 
@@ -222,9 +230,10 @@
             this.secondaryLabel.BackColor = System.Drawing.Color.Transparent;
             this.secondaryLabel.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.secondaryLabel.ForeColor = System.Drawing.Color.Navy;
-            this.secondaryLabel.Location = new System.Drawing.Point(422, 441);
+            this.secondaryLabel.Location = new System.Drawing.Point(316, 358);
+            this.secondaryLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.secondaryLabel.Name = "secondaryLabel";
-            this.secondaryLabel.Size = new System.Drawing.Size(213, 28);
+            this.secondaryLabel.Size = new System.Drawing.Size(174, 21);
             this.secondaryLabel.TabIndex = 36;
             this.secondaryLabel.Text = "Secondary (Optional)";
             // 
@@ -244,13 +253,13 @@
             this.secondaryPhoneNo.ForeColor = System.Drawing.Color.Black;
             this.secondaryPhoneNo.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
             this.secondaryPhoneNo.HoverState.ForeColor = System.Drawing.Color.Black;
-            this.secondaryPhoneNo.Location = new System.Drawing.Point(427, 487);
-            this.secondaryPhoneNo.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.secondaryPhoneNo.Location = new System.Drawing.Point(320, 396);
+            this.secondaryPhoneNo.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this.secondaryPhoneNo.Name = "secondaryPhoneNo";
             this.secondaryPhoneNo.PlaceholderForeColor = System.Drawing.Color.Gray;
             this.secondaryPhoneNo.PlaceholderText = "Enter a phone number";
             this.secondaryPhoneNo.SelectedText = "";
-            this.secondaryPhoneNo.Size = new System.Drawing.Size(345, 48);
+            this.secondaryPhoneNo.Size = new System.Drawing.Size(259, 39);
             this.secondaryPhoneNo.TabIndex = 60;
             // 
             // EmailLabel
@@ -259,9 +268,10 @@
             this.EmailLabel.BackColor = System.Drawing.Color.Transparent;
             this.EmailLabel.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.EmailLabel.ForeColor = System.Drawing.Color.Navy;
-            this.EmailLabel.Location = new System.Drawing.Point(32, 561);
+            this.EmailLabel.Location = new System.Drawing.Point(24, 456);
+            this.EmailLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.EmailLabel.Name = "EmailLabel";
-            this.EmailLabel.Size = new System.Drawing.Size(166, 28);
+            this.EmailLabel.Size = new System.Drawing.Size(136, 21);
             this.EmailLabel.TabIndex = 15;
             this.EmailLabel.Text = "Email (Optional)";
             // 
@@ -281,13 +291,13 @@
             this.LicenseBox.ForeColor = System.Drawing.Color.Black;
             this.LicenseBox.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
             this.LicenseBox.HoverState.ForeColor = System.Drawing.Color.Black;
-            this.LicenseBox.Location = new System.Drawing.Point(427, 158);
-            this.LicenseBox.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.LicenseBox.Location = new System.Drawing.Point(320, 128);
+            this.LicenseBox.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this.LicenseBox.Name = "LicenseBox";
             this.LicenseBox.PlaceholderForeColor = System.Drawing.Color.Gray;
             this.LicenseBox.PlaceholderText = "Enter driver\'s license number";
             this.LicenseBox.SelectedText = "";
-            this.LicenseBox.Size = new System.Drawing.Size(345, 48);
+            this.LicenseBox.Size = new System.Drawing.Size(259, 39);
             this.LicenseBox.TabIndex = 49;
             // 
             // EmailBox
@@ -306,13 +316,13 @@
             this.EmailBox.ForeColor = System.Drawing.Color.Black;
             this.EmailBox.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
             this.EmailBox.HoverState.ForeColor = System.Drawing.Color.Black;
-            this.EmailBox.Location = new System.Drawing.Point(37, 603);
-            this.EmailBox.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.EmailBox.Location = new System.Drawing.Point(28, 490);
+            this.EmailBox.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this.EmailBox.Name = "EmailBox";
             this.EmailBox.PlaceholderForeColor = System.Drawing.Color.Gray;
             this.EmailBox.PlaceholderText = "Enter a phone number";
             this.EmailBox.SelectedText = "";
-            this.EmailBox.Size = new System.Drawing.Size(735, 48);
+            this.EmailBox.Size = new System.Drawing.Size(551, 39);
             this.EmailBox.TabIndex = 61;
             // 
             // NameLabel
@@ -321,9 +331,10 @@
             this.NameLabel.BackColor = System.Drawing.Color.Transparent;
             this.NameLabel.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.NameLabel.ForeColor = System.Drawing.Color.Navy;
-            this.NameLabel.Location = new System.Drawing.Point(32, 121);
+            this.NameLabel.Location = new System.Drawing.Point(24, 98);
+            this.NameLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.NameLabel.Name = "NameLabel";
-            this.NameLabel.Size = new System.Drawing.Size(68, 28);
+            this.NameLabel.Size = new System.Drawing.Size(56, 21);
             this.NameLabel.TabIndex = 0;
             this.NameLabel.Text = "Name";
             // 
@@ -344,10 +355,10 @@
             this.button1.HoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(58)))), ((int)(((byte)(130)))));
             this.button1.HoverState.FillColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(58)))), ((int)(((byte)(130)))));
             this.button1.HoverState.ForeColor = System.Drawing.Color.White;
-            this.button1.Location = new System.Drawing.Point(623, 699);
-            this.button1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.button1.Location = new System.Drawing.Point(467, 568);
+            this.button1.Margin = new System.Windows.Forms.Padding(2);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(149, 50);
+            this.button1.Size = new System.Drawing.Size(112, 41);
             this.button1.TabIndex = 80;
             this.button1.Text = "Add";
             this.button1.Click += new System.EventHandler(this.button1_Click);
@@ -368,13 +379,13 @@
             this.NamebOx.ForeColor = System.Drawing.Color.Black;
             this.NamebOx.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
             this.NamebOx.HoverState.ForeColor = System.Drawing.Color.Black;
-            this.NamebOx.Location = new System.Drawing.Point(37, 158);
-            this.NamebOx.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.NamebOx.Location = new System.Drawing.Point(28, 128);
+            this.NamebOx.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this.NamebOx.Name = "NamebOx";
             this.NamebOx.PlaceholderForeColor = System.Drawing.Color.Gray;
             this.NamebOx.PlaceholderText = "Enter a name";
             this.NamebOx.SelectedText = "";
-            this.NamebOx.Size = new System.Drawing.Size(345, 48);
+            this.NamebOx.Size = new System.Drawing.Size(259, 39);
             this.NamebOx.TabIndex = 47;
             // 
             // addPictureButton
@@ -394,10 +405,10 @@
             this.addPictureButton.HoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(58)))), ((int)(((byte)(130)))));
             this.addPictureButton.HoverState.FillColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(58)))), ((int)(((byte)(130)))));
             this.addPictureButton.HoverState.ForeColor = System.Drawing.Color.White;
-            this.addPictureButton.Location = new System.Drawing.Point(477, 699);
-            this.addPictureButton.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.addPictureButton.Location = new System.Drawing.Point(358, 568);
+            this.addPictureButton.Margin = new System.Windows.Forms.Padding(2);
             this.addPictureButton.Name = "addPictureButton";
-            this.addPictureButton.Size = new System.Drawing.Size(123, 50);
+            this.addPictureButton.Size = new System.Drawing.Size(92, 41);
             this.addPictureButton.TabIndex = 81;
             this.addPictureButton.Text = "Cancel";
             this.addPictureButton.Click += new System.EventHandler(this.addPictureButton_Click);
@@ -408,9 +419,10 @@
             this.label2.BackColor = System.Drawing.Color.Transparent;
             this.label2.Font = new System.Drawing.Font("Segoe UI Black", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label2.ForeColor = System.Drawing.Color.Navy;
-            this.label2.Location = new System.Drawing.Point(252, 34);
+            this.label2.Location = new System.Drawing.Point(85, 21);
+            this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(304, 41);
+            this.label2.Size = new System.Drawing.Size(241, 32);
             this.label2.TabIndex = 44;
             this.label2.Text = "Add New Customer";
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -420,18 +432,28 @@
             this.guna2ControlBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.guna2ControlBox2.FillColor = System.Drawing.Color.Transparent;
             this.guna2ControlBox2.IconColor = System.Drawing.Color.Navy;
-            this.guna2ControlBox2.Location = new System.Drawing.Point(712, 34);
-            this.guna2ControlBox2.Margin = new System.Windows.Forms.Padding(4);
+            this.guna2ControlBox2.Location = new System.Drawing.Point(534, 28);
             this.guna2ControlBox2.Name = "guna2ControlBox2";
-            this.guna2ControlBox2.Size = new System.Drawing.Size(60, 36);
+            this.guna2ControlBox2.Size = new System.Drawing.Size(45, 29);
             this.guna2ControlBox2.TabIndex = 84;
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
+            this.pictureBox1.Location = new System.Drawing.Point(28, 17);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(52, 40);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBox1.TabIndex = 85;
+            this.pictureBox1.TabStop = false;
             // 
             // frmAdd
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(819, 780);
+            this.ClientSize = new System.Drawing.Size(614, 634);
+            this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.guna2ControlBox2);
             this.Controls.Add(this.addPictureButton);
             this.Controls.Add(this.button1);
@@ -455,11 +477,12 @@
             this.Controls.Add(this.licenseLabel);
             this.ForeColor = System.Drawing.Color.Black;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "frmAdd";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "frmAddCustomer";
             this.Load += new System.EventHandler(this.frmAdd_Load);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -488,5 +511,6 @@
         private Guna.UI2.WinForms.Guna2GradientButton addPictureButton;
         private System.Windows.Forms.Label label2;
         private Guna.UI2.WinForms.Guna2ControlBox guna2ControlBox2;
+        private System.Windows.Forms.PictureBox pictureBox1;
     }
 }

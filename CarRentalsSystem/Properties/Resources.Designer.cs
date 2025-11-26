@@ -63,6 +63,16 @@ namespace CarRentalsSystem.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap Animated_GIF {
+            get {
+                object obj = ResourceManager.GetObject("Animated GIF", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap Rectangle_17921 {
             get {
                 object obj = ResourceManager.GetObject("Rectangle 17921", resourceCulture);

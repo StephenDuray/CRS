@@ -16,7 +16,7 @@ namespace CarRentalsSystem.Control
         public DashboardControl()
         {
             InitializeComponent();
-            this.AutoScroll = true;
+           
             this.Load += DashboardControl_Load;
         }
 

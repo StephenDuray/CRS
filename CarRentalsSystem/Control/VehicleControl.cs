@@ -14,29 +14,26 @@ namespace CarRentalsSystem.Control
         {
             InitializeComponent();
             this.Load += VehicleControl_Load;
-
-          
         }
 
         private void VehicleControl_Load(object sender, EventArgs e)
         {
-            //flowLayoutPanel1.AutoScroll = true;
-          //  flowLayoutPanel1.FlowDirection = FlowDirection.LeftToRight;
+            flowLayoutPanel1.AutoScroll = true;
+            flowLayoutPanel1.FlowDirection = FlowDirection.LeftToRight;
             flowLayoutPanel1.WrapContents = true;
 
-            // ❌ REMOVE THESE — they break the layout
-            // int cardSpace = (190 + 20);
-            // flowLayoutPanel1.MaximumSize = new Size(cardSpace * 5 + 20, 9999);
-            // flowLayoutPanel1.MinimumSize = new Size(cardSpace * 5 + 20, 0);
-
-            // ✔ FIX: Just anchor the flow panel
             flowLayoutPanel1.Dock = DockStyle.None;
             flowLayoutPanel1.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
 
+            RefreshVehicles();   // load on first time
+        }
+
+        // 👉 Call this anytime you want to reload vehicles & statuses
+        public void RefreshVehicles()
+        {
             LoadVehicleCards();
         }
 
-        // ❌ No need to force a fixed width any more – remove or leave empty
         private void flowLayoutPanel1_SizeChanged(object sender, EventArgs e)
         {
             // Intentionally left blank
@@ -47,7 +44,6 @@ namespace CarRentalsSystem.Control
         {
             flowLayoutPanel1.Controls.Clear();
 
-            // now loads ALL vehicles, not just available ones
             DataTable dt = dbQuery.GetAllVehiclesForGallery();
 
             foreach (DataRow row in dt.Rows)
@@ -59,25 +55,34 @@ namespace CarRentalsSystem.Control
 
         private Panel CreateVehicleCard(DataRow row)
         {
+            // read data safely
             string brand = row["brand"]?.ToString();
             string model = row["model"]?.ToString();
+            string vehicleType = row.Table.Columns.Contains("vehicleType") ? row["vehicleType"]?.ToString() : "";
+            string plateNo = row.Table.Columns.Contains("plateNo") ? row["plateNo"]?.ToString() : "";
+            string color = row.Table.Columns.Contains("color") ? row["color"]?.ToString() : "";
+            string status = row.Table.Columns.Contains("status") ? row["status"]?.ToString() : "";
+
+            decimal dailyRate = 0m;
+            if (row.Table.Columns.Contains("dailyRate") && row["dailyRate"] != DBNull.Value)
+                dailyRate = Convert.ToDecimal(row["dailyRate"]);
 
             // === OUTER CARD ===
             var card = new Panel
             {
-                Width = 280,    // ⭐ slightly wider for nicer spacing
-                Height = 340,
+                Width = 280,
+                Height = 360,
                 Margin = new Padding(40),
                 BackColor = Color.White,
                 BorderStyle = BorderStyle.FixedSingle,
                 Tag = row["vehicleID"]
             };
 
-            // === IMAGE BOX (square, like your design) ===
+            // === IMAGE BOX ===
             var pic = new PictureBox
             {
                 Dock = DockStyle.Top,
-                Height = 275,   // ⭐ image ~260x260 inside card
+                Height = 210,   // leave more room for text
                 SizeMode = PictureBoxSizeMode.Zoom,
                 BackColor = Color.LightGray
             };
@@ -91,20 +96,88 @@ namespace CarRentalsSystem.Control
                 }
             }
 
-            // === CAR NAME ===
+            // === INFO PANEL (bottom part of the card) ===
+            var infoPanel = new Panel
+            {
+                Dock = DockStyle.Fill,
+                Padding = new Padding(6)
+            };
+
+            // Title: Brand + Model
             var lblTitle = new Label
             {
+                AutoSize = false,
                 Dock = DockStyle.Top,
-                TextAlign = ContentAlignment.MiddleCenter,
-                Font = new Font("Segoe UI", 12F, FontStyle.Bold),
-                Height = 30,
+                Height = 24,
+                TextAlign = ContentAlignment.MiddleLeft,
+                Font = new Font("Segoe UI", 11F, FontStyle.Bold),
                 Text = $"{brand} {model}"
             };
 
-            // stack: title above image or image above title?
-            // if you want title on TOP (like your screenshot), add in this order:
+            // Line: Type • Color
+            var lblTypeColor = new Label
+            {
+                AutoSize = false,
+                Dock = DockStyle.Top,
+                Height = 20,
+                TextAlign = ContentAlignment.MiddleLeft,
+                Font = new Font("Segoe UI", 9F, FontStyle.Regular),
+                ForeColor = Color.DimGray,
+                Text = $"{vehicleType} • {color}"
+            };
+
+            // Line: Plate
+            var lblPlate = new Label
+            {
+                AutoSize = false,
+                Dock = DockStyle.Top,
+                Height = 20,
+                TextAlign = ContentAlignment.MiddleLeft,
+                Font = new Font("Segoe UI", 9F, FontStyle.Regular),
+                Text = string.IsNullOrWhiteSpace(plateNo) ? "Plate: (N/A)" : $"Plate: {plateNo}"
+            };
+
+            // Line: Rate
+            var lblRate = new Label
+            {
+                AutoSize = false,
+                Dock = DockStyle.Top,
+                Height = 20,
+                TextAlign = ContentAlignment.MiddleLeft,
+                Font = new Font("Segoe UI", 9F, FontStyle.Regular),
+                ForeColor = Color.FromArgb(0, 120, 215),
+                Text = dailyRate > 0m ? $"₱ {dailyRate:0.00} / day" : "₱ 0.00 / day"
+            };
+
+            // Status line at the bottom
+            var lblStatus = new Label
+            {
+                AutoSize = false,
+                Dock = DockStyle.Bottom,
+                Height = 20,
+                TextAlign = ContentAlignment.MiddleCenter,
+                Font = new Font("Segoe UI", 9F, FontStyle.Bold),
+                Text = string.IsNullOrWhiteSpace(status) ? "Unknown" : status
+            };
+
+            // status color (Available / Rented / etc.)
+            if (status.Equals("Available", StringComparison.OrdinalIgnoreCase))
+                lblStatus.ForeColor = Color.Green;
+            else if (status.Equals("Rented", StringComparison.OrdinalIgnoreCase))
+                lblStatus.ForeColor = Color.Red;
+            else
+                lblStatus.ForeColor = Color.DarkOrange;
+
+            // add info controls (order matters)
+            infoPanel.Controls.Add(lblRate);
+            infoPanel.Controls.Add(lblPlate);
+            infoPanel.Controls.Add(lblTypeColor);
+            infoPanel.Controls.Add(lblTitle);
+            infoPanel.Controls.Add(lblStatus); // Dock.Bottom keeps it at bottom
+
+            // add to card
+            card.Controls.Add(infoPanel);
             card.Controls.Add(pic);
-            card.Controls.Add(lblTitle);
 
             return card;
         }
@@ -117,6 +190,9 @@ namespace CarRentalsSystem.Control
                 var owner = this.FindForm();
                 frmAddVehicle.ShowDialog(owner);
             }
+
+            // reload cards after adding a vehicle
+            RefreshVehicles();
         }
 
         private void pictureBox1_Click(object sender, EventArgs e) { }

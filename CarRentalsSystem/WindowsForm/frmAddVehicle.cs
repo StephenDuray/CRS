@@ -200,10 +200,9 @@ namespace CarRentalsSystem.WindowsForm
         {
             string brand = BrandBox.Text.Trim();
             string model = ModelBox.Text.Trim();
-            string vehicleType = comboBox1.SelectedItem != null ? comboBox1.SelectedItem.ToString(): string.Empty;
+            string vehicleType = comboBox1.SelectedItem != null ? comboBox1.SelectedItem.ToString() : string.Empty;
             string plateNo = platenoBox.Text.Trim();
 
-            // better to use Text or SelectedItem instead of SelectedText
             string status = StatusBox.SelectedItem != null
                                 ? StatusBox.SelectedItem.ToString()
                                 : StatusBox.Text.Trim();
@@ -212,7 +211,7 @@ namespace CarRentalsSystem.WindowsForm
             string mileageText = MileageBox.Text.Trim();
             string dailyRateText = DailyRateBox.Text.Trim();
 
-            // Validation
+            // --- validation (same as yours) ---
             if (string.IsNullOrWhiteSpace(brand) ||
                 string.IsNullOrWhiteSpace(model) ||
                 string.IsNullOrWhiteSpace(vehicleType))
@@ -237,51 +236,55 @@ namespace CarRentalsSystem.WindowsForm
                 return;
             }
 
-            // Optionally require an image:
-            // if (_vehicleImageBytes == null)
-            // {
-            //     MessageBox.Show("Please upload a vehicle image.", "Validation", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            //     return;
-            // }
-
-            // Insert into DB (now includes image)
-            bool added = dbQuery.AddVehicle(
+            // --- INSERT VEHICLE and get its ID ---
+            int vehicleId = dbQuery.AddVehicle(
                  brand,
                  model,
                  vehicleType,
                  status,
-                 color,              // 5th = color
-                 dailyRate,          // 6th = dailyRate
-                 currentMileage,     // 7th = currentMileage
-                 _vehicleImageBytes, // 8th = vehicleImage
-                 plateNo             // 9th = plateNo
+                 color,
+                 dailyRate,
+                 currentMileage,
+                 _vehicleImageBytes,
+                 plateNo
              );
 
-
-            if (added)
-            {
-                MessageBox.Show("Vehicle added successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-                BrandBox.Clear();
-                ModelBox.Clear();
-                comboBox1.SelectedIndex = -1;
-                StatusBox.SelectedIndex = -1;
-                ColorBox.Clear();
-                DailyRateBox.Clear();
-                MileageBox.Clear();
-                platenoBox.Clear();
-
-                guna2Panel1.BackgroundImage = null;
-                _vehicleImageBytes = null;
-
-                pictureBox2.Show();
-                label3.Show();
-                label4.Show();
-            }
-            else
+            if (vehicleId <= 0)
             {
                 MessageBox.Show("Failed to add vehicle.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
             }
+
+            // --- INSERT ALL CHECKED PARTS ---
+            foreach (object item in checkedListBox1.CheckedItems)
+            {
+                string partName = item.ToString(); // e.g. "Wheels", "Seats"
+                dbQuery.AddVehiclePart(vehicleId, partName);
+            }
+
+            MessageBox.Show("Vehicle and parts added successfully!", "Success",
+                MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+            // --- clear controls (same as your code) ---
+            BrandBox.Clear();
+            ModelBox.Clear();
+            comboBox1.SelectedIndex = -1;
+            StatusBox.SelectedIndex = -1;
+            ColorBox.Clear();
+            DailyRateBox.Clear();
+            MileageBox.Clear();
+            platenoBox.Clear();
+
+            // clear image
+            guna2Panel1.BackgroundImage = null;
+            _vehicleImageBytes = null;
+            pictureBox2.Show();
+            label3.Show();
+            label4.Show();
+
+            // uncheck parts
+            for (int i = 0; i < checkedListBox1.Items.Count; i++)
+                checkedListBox1.SetItemChecked(i, false);
         }
 
         private void guna2Panel1_Paint(object sender, PaintEventArgs e)
@@ -298,6 +301,16 @@ namespace CarRentalsSystem.WindowsForm
         private void addPictureButton_Click(object sender, EventArgs e)
         {
             this.Close();
+        }
+
+        private void guna2GroupBox1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void checkedListBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

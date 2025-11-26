@@ -53,13 +53,13 @@ namespace CarRentalsSystem
                 MessageBox.Show("Log in successfully!", "Success",
                                 MessageBoxButtons.OK, MessageBoxIcon.None);
 
-                // Create dashboard
+              
                 frmMainDashboard dashboard = new frmMainDashboard();
 
-                // When dashboard is closed (e.g., user logs out), show login again
+              
                 dashboard.FormClosed += (s, args) => this.Show();
 
-                // Hide login and show dashboard (non-modal)
+               
                 this.Hide();
                 dashboard.Show();
             }

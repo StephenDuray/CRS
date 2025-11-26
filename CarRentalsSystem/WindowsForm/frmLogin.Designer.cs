@@ -35,6 +35,7 @@
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
+            this.guna2ControlBox1 = new Guna.UI2.WinForms.Guna2ControlBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -55,13 +56,13 @@
             this.textBox1.IconLeft = ((System.Drawing.Image)(resources.GetObject("textBox1.IconLeft")));
             this.textBox1.IconLeftOffset = new System.Drawing.Point(2, 2);
             this.textBox1.IconLeftSize = new System.Drawing.Size(30, 30);
-            this.textBox1.Location = new System.Drawing.Point(46, 297);
-            this.textBox1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.textBox1.Location = new System.Drawing.Point(34, 241);
+            this.textBox1.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this.textBox1.Name = "textBox1";
             this.textBox1.PlaceholderForeColor = System.Drawing.Color.Gray;
-            this.textBox1.PlaceholderText = "Username or Email";
+            this.textBox1.PlaceholderText = "Username ";
             this.textBox1.SelectedText = "";
-            this.textBox1.Size = new System.Drawing.Size(561, 66);
+            this.textBox1.Size = new System.Drawing.Size(421, 54);
             this.textBox1.TabIndex = 15;
             // 
             // textBox2
@@ -80,13 +81,13 @@
             this.textBox2.IconLeft = ((System.Drawing.Image)(resources.GetObject("textBox2.IconLeft")));
             this.textBox2.IconLeftOffset = new System.Drawing.Point(2, 2);
             this.textBox2.IconLeftSize = new System.Drawing.Size(30, 30);
-            this.textBox2.Location = new System.Drawing.Point(46, 407);
-            this.textBox2.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.textBox2.Location = new System.Drawing.Point(34, 331);
+            this.textBox2.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this.textBox2.Name = "textBox2";
             this.textBox2.PlaceholderForeColor = System.Drawing.Color.Gray;
             this.textBox2.PlaceholderText = "Password";
             this.textBox2.SelectedText = "";
-            this.textBox2.Size = new System.Drawing.Size(561, 66);
+            this.textBox2.Size = new System.Drawing.Size(421, 54);
             this.textBox2.TabIndex = 16;
             this.textBox2.UseSystemPasswordChar = true;
             // 
@@ -103,10 +104,10 @@
             this.button1.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Bold);
             this.button1.ForeColor = System.Drawing.Color.White;
             this.button1.HoverState.FillColor = System.Drawing.Color.Teal;
-            this.button1.Location = new System.Drawing.Point(46, 583);
-            this.button1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.button1.Location = new System.Drawing.Point(34, 474);
+            this.button1.Margin = new System.Windows.Forms.Padding(2);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(561, 66);
+            this.button1.Size = new System.Drawing.Size(421, 54);
             this.button1.TabIndex = 17;
             this.button1.Text = "Login";
             this.button1.Click += new System.EventHandler(this.button1_Click_1);
@@ -114,10 +115,9 @@
             // pictureBox1
             // 
             this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
-            this.pictureBox1.Location = new System.Drawing.Point(262, 34);
-            this.pictureBox1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.pictureBox1.Location = new System.Drawing.Point(196, 28);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(133, 94);
+            this.pictureBox1.Size = new System.Drawing.Size(100, 76);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBox1.TabIndex = 0;
             this.pictureBox1.TabStop = false;
@@ -127,9 +127,10 @@
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label3.ForeColor = System.Drawing.Color.Gray;
-            this.label3.Location = new System.Drawing.Point(166, 193);
+            this.label3.Location = new System.Drawing.Point(124, 157);
+            this.label3.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(308, 37);
+            this.label3.Size = new System.Drawing.Size(242, 30);
             this.label3.TabIndex = 12;
             this.label3.Text = "Drive Your Way, Anytime";
             // 
@@ -138,19 +139,31 @@
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Segoe UI", 27.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label4.ForeColor = System.Drawing.Color.Navy;
-            this.label4.Location = new System.Drawing.Point(198, 128);
+            this.label4.Location = new System.Drawing.Point(148, 104);
+            this.label4.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(252, 62);
+            this.label4.Size = new System.Drawing.Size(200, 50);
             this.label4.TabIndex = 11;
             this.label4.Text = "Car Rental";
             // 
+            // guna2ControlBox1
+            // 
+            this.guna2ControlBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.guna2ControlBox1.FillColor = System.Drawing.Color.Transparent;
+            this.guna2ControlBox1.IconColor = System.Drawing.Color.Navy;
+            this.guna2ControlBox1.Location = new System.Drawing.Point(410, 28);
+            this.guna2ControlBox1.Name = "guna2ControlBox1";
+            this.guna2ControlBox1.Size = new System.Drawing.Size(45, 29);
+            this.guna2ControlBox1.TabIndex = 18;
+            // 
             // frmLogin
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(660, 705);
+            this.ClientSize = new System.Drawing.Size(495, 573);
             this.ControlBox = false;
+            this.Controls.Add(this.guna2ControlBox1);
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.textBox2);
             this.Controls.Add(this.pictureBox1);
@@ -158,7 +171,7 @@
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this.Name = "frmLogin";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Form1";
@@ -176,6 +189,7 @@
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
+        private Guna.UI2.WinForms.Guna2ControlBox guna2ControlBox1;
     }
 }
 

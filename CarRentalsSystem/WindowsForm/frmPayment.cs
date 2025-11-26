@@ -1,11 +1,17 @@
-﻿using CarRentalsSystem.Database;
+﻿using CarRentalsSystem;
+using CarRentalsSystem.Database;
 using CarRentalsSystem.Factory;
 using Guna.UI2.WinForms;
+using QuestPDF.Fluent;
+using QuestPDF.Helpers;
+using QuestPDF.Infrastructure;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,12 +25,12 @@ namespace CarRentalsSystem.WindowsForm
         {
             InitializeComponent();
             this.FormBorderStyle = FormBorderStyle.None;
-            this.BackColor = Color.White;
+            this.BackColor = System.Drawing.Color.White;
         }
 
         int borderRadius = 25;
         int borderSize = 2;
-        Color borderColor = Color.FromArgb(0, 45, 139);
+        System.Drawing.Color borderColor = System.Drawing.Color.FromArgb(0, 45, 139);
 
         protected override void OnPaint(PaintEventArgs e)
         {
@@ -51,12 +57,6 @@ namespace CarRentalsSystem.WindowsForm
             }
         }
 
-
-
-
-
-
-
         private void frmPayment_Load(object sender, EventArgs e)
         {
             int radius = 40;
@@ -69,17 +69,13 @@ namespace CarRentalsSystem.WindowsForm
             path.CloseAllFigures();
             this.Region = new Region(path);
 
-
             LoadContract();
 
-            // numeric only for textbox2
+         
             guna2TextBox2.KeyPress += NumberKeyPress;
 
-            // react when contractID changes
-            guna2ComboBox1.SelectedIndexChanged += guna2ComboBox1_SelectedIndexChanged;
-
-            // start hidden until we know it's full-to-full
            
+            guna2ComboBox1.SelectedIndexChanged += guna2ComboBox1_SelectedIndexChanged;
         }
 
         private void guna2Button1_Click(object sender, EventArgs e)
@@ -91,8 +87,8 @@ namespace CarRentalsSystem.WindowsForm
         {
             DataTable dt = dbQuery.GetContracts();
             guna2ComboBox1.DataSource = dt;
-            guna2ComboBox1.DisplayMember = "contractID";   // what user sees
-            guna2ComboBox1.ValueMember = "contractID";     // real ID
+            guna2ComboBox1.DisplayMember = "contractID";  
+            guna2ComboBox1.ValueMember = "contractID";    
             guna2ComboBox1.SelectedIndex = -1;
         }
 
@@ -105,7 +101,7 @@ namespace CarRentalsSystem.WindowsForm
                 e.Handled = true;
             }
 
-            // Allow only ONE decimal point
+          
             var txt = sender as Guna2TextBox;
             if (e.KeyChar == '.' && txt != null && txt.Text.Contains("."))
             {
@@ -113,7 +109,7 @@ namespace CarRentalsSystem.WindowsForm
             }
         }
 
-        // ===== CHECK CONTRACT WHEN USER SELECTS IT =====
+      
         private void guna2ComboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
             guna2TextBox2.Clear();
@@ -124,21 +120,19 @@ namespace CarRentalsSystem.WindowsForm
             if (!int.TryParse(guna2ComboBox1.SelectedValue.ToString(), out int contractId))
                 return;
 
-            // 🔒 First: check if this contract is already paid
+          
             if (dbQuery.ContractHasPayment(contractId))
             {
-                // contract already has a payment → do NOT show total, block editing
                 guna2TextBox2.ReadOnly = true;
-                // optional: show an info message once
                 MessageBox.Show("This contract is already paid. No new payment can be recorded.",
                                 "Already Paid", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
 
-            // Not yet paid → allow editing and auto-fill total if Full-to-Full
+           
             guna2TextBox2.ReadOnly = false;
 
-            double total = dbQuery.GetFullToFullTotal(contractId);   // this already supports multiple vehicles
+            double total = dbQuery.GetFullToFullTotal(contractId);  
 
             if (total > 0)
             {
@@ -146,11 +140,9 @@ namespace CarRentalsSystem.WindowsForm
             }
             else
             {
-                // Not Full-to-Full (or no rented vehicles) → user can type manually
                 guna2TextBox2.Clear();
             }
         }
-
 
         private void guna2TextBox2_TextChanged(object sender, EventArgs e)
         {
@@ -158,7 +150,7 @@ namespace CarRentalsSystem.WindowsForm
 
         private void guna2TextBox1_TextChanged(object sender, EventArgs e)
         {
-            // no logic needed here anymore
+
         }
 
         private void ResetField()
@@ -166,12 +158,11 @@ namespace CarRentalsSystem.WindowsForm
             guna2ComboBox1.SelectedIndex = -1;
             guna2ComboBox2.SelectedIndex = -1;
             guna2TextBox2.Clear();
-          
         }
 
         private void FulltoFullTotal()
         {
-            // no longer needed, handled in combo SelectedIndexChanged
+            
         }
 
         private void guna2Button2_Click(object sender, EventArgs e)
@@ -190,7 +181,7 @@ namespace CarRentalsSystem.WindowsForm
                 return;
             }
 
-            // 🔒 STOP if already paid
+            
             if (dbQuery.ContractHasPayment(contractId))
             {
                 MessageBox.Show("This contract already has a recorded payment. You cannot add another one.",
@@ -198,7 +189,7 @@ namespace CarRentalsSystem.WindowsForm
                 return;
             }
 
-            // Check amount from textbox2
+            
             if (!double.TryParse(guna2TextBox2.Text.Trim(), out double amount))
             {
                 MessageBox.Show("Invalid or missing total amount.",
@@ -206,7 +197,7 @@ namespace CarRentalsSystem.WindowsForm
                 return;
             }
 
-            // Example: payment method from comboBox2 (or however you store it)
+            
             if (guna2ComboBox2.SelectedIndex < 0)
             {
                 MessageBox.Show("Please select a payment method.",
@@ -221,10 +212,21 @@ namespace CarRentalsSystem.WindowsForm
 
             if (ok)
             {
+                
+                try
+                {
+                    GenerateContractPdf(contractId, amount, method);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Payment saved but failed to generate contract PDF:\n" + ex.Message,
+                                    "PDF Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+
                 MessageBox.Show("Payment recorded successfully!",
                                 "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                ResetField();   // this should just clear controls, not hide textbox2
+                ResetField();
                 frmDeposit frmDeposit = new frmDeposit();
                 frmDeposit.ShowDialog();
                 this.Close();
@@ -239,6 +241,75 @@ namespace CarRentalsSystem.WindowsForm
         private void guna2Panel1_Paint(object sender, PaintEventArgs e)
         {
 
+        }
+
+      
+        private void GenerateContractPdf(int contractId, double amount, string paymentMethod)
+        {
+            
+            DataTable contracts = dbQuery.GetContracts();
+            DataRow row = contracts.AsEnumerable()
+                                   .FirstOrDefault(r => Convert.ToInt32(r["contractID"]) == contractId);
+
+            if (row == null)
+                return;
+
+            string policyName = row["PolicyName"]?.ToString() ?? "";
+
+           
+            bool isFullToFull = policyName.IndexOf("full", StringComparison.OrdinalIgnoreCase) >= 0;
+            if (!isFullToFull)
+                return;
+
+            string customerName = row["CustomerName"]?.ToString() ?? "";
+            string customerIdText = row["customerID"]?.ToString() ?? "";
+
+            DateTime bookingDate = Convert.ToDateTime(row["bookingDate"]);
+            DateTime expectedReturn = Convert.ToDateTime(row["expectedReturnDate"]);
+            int daysRented = (expectedReturn.Date - bookingDate.Date).Days + 1;
+
+          
+            decimal securityDeposit = dbQuery.CalculateDepositForFullToFull(contractId);
+
+            decimal totalRentalAmount = (decimal)amount;
+            decimal totalDue = totalRentalAmount + securityDeposit;
+
+           
+            string address = row["Address"]?.ToString() ?? ""; ;
+            string phone = "";
+            string employeeName = "";
+            string employeeId = "";
+
+           
+            var vehicles = new List<VehicleLine>();
+           
+            string folder = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+            string filePath = Path.Combine(folder, $"Contract_{contractId}.pdf");
+
+            var pdf = new GeneratePDFContract.pdf_Contract();
+            pdf.GenerateContract(
+                filePath: filePath,
+                //contractId: contractId,
+                customerName: customerName,
+                customerIdText: customerIdText,
+                address: address,
+                phone: phone,
+                policyName: policyName,
+                bookingDate: bookingDate,
+                expectedReturnDate: expectedReturn,
+                daysRented: daysRented,
+                totalRentalAmount: totalRentalAmount,
+                securityDeposit: securityDeposit,
+                paymentMethod: paymentMethod,
+                totalDue: totalDue,
+                employeeName: employeeName,
+                employeeId: employeeId,
+                vehicles: vehicles
+
+            );
+
+            MessageBox.Show($"Contract PDF generated:\n{filePath}",
+                            "Contract", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
     }
 }

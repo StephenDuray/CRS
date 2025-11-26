@@ -61,9 +61,15 @@ namespace CarRentalsSystem.Database
             }
         }
         // Add Vehicle
-        public static bool AddVehicle(string brand, string model, string vehicleType, string status, string color, double dailyRate, int currentMileage, byte[] vehicleImage, string plateNo)
+        public static int AddVehicle(string brand, string model, string vehicleType, string status, string color, double dailyRate, int currentMileage, byte[] vehicleImage, string plateNo)
         {
-            string query = @" INSERT INTO vehicle (brand, model, vehicleType,status, color, dailyRate, currentMileage, vehicleImage,plateNo)VALUES (@brand, @model, @vehicleType,@status, @color, @dailyRate, @currentMileage, @vehicleImage,@plateNo);
+            string query = @"
+        INSERT INTO vehicle 
+            (brand, model, vehicleType, status, color, dailyRate, currentMileage, vehicleImage, plateNo)
+        VALUES 
+            (@brand, @model, @vehicleType, @status, @color, @dailyRate, @currentMileage, @vehicleImage, @plateNo);
+
+        SELECT LAST_INSERT_ID();
     ";
 
             using (MySqlCommand cmd = new MySqlCommand(query, Connection))
@@ -75,14 +81,30 @@ namespace CarRentalsSystem.Database
                 cmd.Parameters.Add("@color", MySqlDbType.VarChar).Value = color;
                 cmd.Parameters.Add("@dailyRate", MySqlDbType.Double).Value = dailyRate;
                 cmd.Parameters.Add("@currentMileage", MySqlDbType.Int32).Value = currentMileage;
-
-                // IMAGE
                 cmd.Parameters.Add("@vehicleImage", MySqlDbType.LongBlob).Value = (object)vehicleImage ?? DBNull.Value;
                 cmd.Parameters.Add("@plateNo", MySqlDbType.VarChar).Value = plateNo;
 
-                return cmd.ExecuteNonQuery() > 0;
+                object result = cmd.ExecuteScalar();  // get new ID
+                if (result != null)
+                    return Convert.ToInt32(result);
+
+                return -1; // failed
             }
         }
+
+        public static void AddVehiclePart(int vehicleId, string partName)
+        {
+            string sql = @"INSERT INTO parts (vehicleID, partName)
+                   VALUES (@vehicleID, @partName)";
+
+            using (var cmd = new MySqlCommand(sql, dbConnection.Instance.Connection))
+            {
+                cmd.Parameters.AddWithValue("@vehicleID", vehicleId);
+                cmd.Parameters.AddWithValue("@partName", partName);
+                cmd.ExecuteNonQuery();
+            }
+        }
+
 
         //Get Contact
         public static bool AddContact(string contactNo, string email, int? customerId)
@@ -149,7 +171,6 @@ namespace CarRentalsSystem.Database
         }
        
 
-        // Get available vehicles (status = 'Available')
         public static int GetAvailableVehicles()
         {
             string query = "SELECT COUNT(*) FROM vehicle WHERE status = 'Available'";
@@ -173,16 +194,25 @@ namespace CarRentalsSystem.Database
         public static DataTable GetAllVehiclesForGallery()
         {
             string sql = @"
-                SELECT vehicleID, brand, model, vehicleImage
-                FROM vehicle";
-            using (MySqlCommand cmd = new MySqlCommand(sql, Connection))
+        SELECT 
+            vehicleID,
+            brand,
+            model,
+            vehicleType,
+            plateNo,
+            color,
+            dailyRate,
+            currentMileage,
+            status,
+            vehicleImage
+        FROM vehicle";
+
+            using (var cmd = new MySql.Data.MySqlClient.MySqlCommand(sql, Connection))
+            using (var da = new MySql.Data.MySqlClient.MySqlDataAdapter(cmd))
             {
-                using (MySqlDataAdapter da = new MySqlDataAdapter(cmd))
-                {
-                    DataTable dt = new DataTable();
-                    da.Fill(dt);
-                    return dt;
-                }
+                DataTable dt = new DataTable();
+                da.Fill(dt);
+                return dt;
             }
         }
         // Get rented vehicles (status = 'Rented')
@@ -228,7 +258,7 @@ namespace CarRentalsSystem.Database
                     WHERE name LIKE @kw
                        OR licenseNo LIKE @kw
                        OR address LIKE @kw
-                    ORDER BY customerID DESC;";
+                    ORDER BY CustomerID DESC;";
 
 
             using (var cmd = new MySqlCommand(sql, Connection))
@@ -378,7 +408,7 @@ namespace CarRentalsSystem.Database
                     c.bookingDate,
                     c.expectedReturnDate,
                     c.actualReturnDate,
-
+                    cu.Address,
                     c.policyID,
                     rp.policyname AS PolicyName,
 
@@ -541,38 +571,34 @@ namespace CarRentalsSystem.Database
         {
             const string sql = @"
         SELECT 
-            v.dailyRate,
-            DATEDIFF(
-                COALESCE(c.actualReturnDate, c.expectedReturnDate),
-                c.bookingDate
-            ) + 1 AS daysCount
+            SUM(
+                v.dailyRate * 
+                (DATEDIFF(
+                    COALESCE(c.actualReturnDate, c.expectedReturnDate),
+                    c.bookingDate
+                ) + 1)
+            ) AS totalAmount
         FROM contracts c
         JOIN rentedvehicles rv ON rv.contractID = c.contractID
-        JOIN vehicle v         ON v.vehicleID = rv.vehicleID
+        JOIN vehicle v         ON v.vehicleID   = rv.vehicleID
         JOIN rentalpolicy rp   ON rp.rentalpolicyID = c.policyID
         WHERE c.contractID = @contractID
-          AND rp.policyname = 'Full to Full'
-        LIMIT 1;
+          AND rp.policyname = 'Full to Full';
     ";
 
             using (var cmd = new MySqlCommand(sql, Connection))
             {
                 cmd.Parameters.Add("@contractID", MySqlDbType.Int32).Value = contractId;
 
-                using (var rdr = cmd.ExecuteReader())
-                {
-                    if (!rdr.Read())
-                    {
-                        return 0;
-                    }
+                object result = cmd.ExecuteScalar();
 
-                    double dailyRate = rdr.GetDouble(rdr.GetOrdinal("dailyRate"));
-                    int days = rdr.GetInt32(rdr.GetOrdinal("daysCount"));
+                if (result == null || result == DBNull.Value)
+                    return 0;
 
-                    return dailyRate * days;
-                }
+                return Convert.ToDouble(result);
             }
         }
+
 
         //public static double GetFullToFullTotal(int contractId)
         //{
@@ -708,10 +734,11 @@ namespace CarRentalsSystem.Database
                 return 2500m;
 
             if (vehicleCount >= 5 && vehicleCount <= 10)
-                return 6000m;
+                return 5000m;
+            
 
-            // No rule for 0, 3–4, >10 → you decide; for now return 0
-            return 0m;
+                // No rule for 0, 3–4, >10 → you decide; for now return 0
+                return 0m;
         }
 
         // 4. Insert into Deposits table
@@ -757,11 +784,13 @@ namespace CarRentalsSystem.Database
             cu.name        AS CustomerName,
             v.brand        AS Brand,
             v.model        AS Model,
+            v.vehicleID    AS VehicleID,      -- 🔹 MUST be here
             d.depositID    AS DepositID,
             d.amount       AS DepositAmount,
             d.status       AS DepositStatus,
             c.expectedReturnDate AS ExpectedReturnDate,
             v.dailyRate    AS DailyRate
+            -- rv.startMeter AS OdometerStart   -- (only if you use this)
         FROM contracts c
         JOIN customer cu 
               ON cu.customerID = c.customerID
@@ -794,6 +823,283 @@ namespace CarRentalsSystem.Database
 
                     return dt.Rows[0];
                 }
+            }
+        }
+
+
+
+        public static bool SaveReturn(
+           int contractId,
+           int odometerEnd,
+           DateTime actualReturnDate,
+           decimal originalDepositAmount,
+           decimal lateCharges,
+           decimal damageFee,
+           int depositId,
+           string depositStatus,
+           string notes,
+           string extraPaymentMethod    // null/empty if no extra payment
+       )
+        {
+            var conn = Connection;
+
+            // Compute financials
+            decimal totalCharges = lateCharges + damageFee;
+            decimal remainingDeposit = Math.Max(0m, originalDepositAmount - totalCharges);
+            decimal extraToPay = Math.Max(0m, totalCharges - originalDepositAmount);
+
+            using (var tx = conn.BeginTransaction())
+            {
+                try
+                {
+                    // 1) Update rentedvehicles.odometerEnd
+                    string sqlOdo = @"
+                        UPDATE rentedvehicles
+                        SET odometerEnd = @odoEnd
+                        WHERE contractID = @contractID;
+                    ";
+
+                    using (var cmd = new MySqlCommand(sqlOdo, conn, tx))
+                    {
+                        cmd.Parameters.AddWithValue("@odoEnd", odometerEnd);
+                        cmd.Parameters.AddWithValue("@contractID", contractId);
+                        cmd.ExecuteNonQuery();
+                    }
+
+                    // 2) Update vehicle.currentMileage = this odometerEnd
+                    string sqlMileage = @"
+                        UPDATE vehicle v
+                        JOIN rentedvehicles rv ON v.vehicleID = rv.vehicleID
+                        SET v.currentMileage = @odoEnd
+                        WHERE rv.contractID = @contractID;
+                    ";
+
+                    using (var cmd = new MySqlCommand(sqlMileage, conn, tx))
+                    {
+                        cmd.Parameters.AddWithValue("@odoEnd", odometerEnd);
+                        cmd.Parameters.AddWithValue("@contractID", contractId);
+                        cmd.ExecuteNonQuery();
+                    }
+
+                    // 3) Set contracts.actualReturnDate
+                    string sqlContract = @"
+                        UPDATE contracts
+                        SET actualReturnDate = @actualReturnDate
+                        WHERE contractID = @contractID;
+                    ";
+
+                    using (var cmd = new MySqlCommand(sqlContract, conn, tx))
+                    {
+                        cmd.Parameters.AddWithValue("@actualReturnDate", actualReturnDate);
+                        cmd.Parameters.AddWithValue("@contractID", contractId);
+                        cmd.ExecuteNonQuery();
+                    }
+
+                    // 4) Update deposit row
+                    // NOTE: requires `charges` column in deposit:
+                    // ALTER TABLE deposit ADD COLUMN charges DOUBLE NOT NULL DEFAULT 0;
+                    string sqlDep = @"
+                        UPDATE deposit
+                        SET 
+                            charges   = @charges,
+                            damageFee = @damageFee,
+                            amount    = @remainingDeposit,  -- remaining / refund
+                            status    = @status,
+                            notes     = @notes
+                        WHERE depositID = @depositID;
+                    ";
+
+                    using (var cmd = new MySqlCommand(sqlDep, conn, tx))
+                    {
+                        cmd.Parameters.AddWithValue("@charges", lateCharges);
+                        cmd.Parameters.AddWithValue("@damageFee", damageFee);
+                        cmd.Parameters.AddWithValue("@remainingDeposit", remainingDeposit);
+                        cmd.Parameters.AddWithValue("@status", depositStatus);
+                        cmd.Parameters.AddWithValue("@notes",
+                            string.IsNullOrWhiteSpace(notes) ? (object)DBNull.Value : notes);
+                        cmd.Parameters.AddWithValue("@depositID", depositId);
+                        cmd.ExecuteNonQuery();
+                    }
+
+                    // 5) If extraToPay > 0 and we have a payment method -> create payment row
+                    if (extraToPay > 0m && !string.IsNullOrWhiteSpace(extraPaymentMethod))
+                    {
+                        string sqlPay = @"
+                            INSERT INTO payment (contractID, amount, paymentDate, paymentMethod)
+                            VALUES (@contractID, @amount, @date, @method);
+                        ";
+
+                        using (var cmd = new MySqlCommand(sqlPay, conn, tx))
+                        {
+                            cmd.Parameters.AddWithValue("@contractID", contractId);
+                            cmd.Parameters.AddWithValue("@amount", extraToPay);
+                            cmd.Parameters.AddWithValue("@date", actualReturnDate.Date);
+                            cmd.Parameters.AddWithValue("@method", extraPaymentMethod);
+                            cmd.ExecuteNonQuery();
+                        }
+                    }
+
+                    // 6) Set vehicle status back to Available
+                    string sqlVeh = @"
+                        UPDATE vehicle v
+                        JOIN rentedvehicles rv ON v.vehicleID = rv.vehicleID
+                        SET v.status = 'Available'
+                        WHERE rv.contractID = @contractID;
+                    ";
+
+                    using (var cmd = new MySqlCommand(sqlVeh, conn, tx))
+                    {
+                        cmd.Parameters.AddWithValue("@contractID", contractId);
+                        cmd.ExecuteNonQuery();
+                    }
+
+                    tx.Commit();
+                    return true;
+                }
+                catch
+                {
+                    tx.Rollback();
+                    throw;
+                }
+            }
+        }
+        public static DataTable GetReturnReports()
+        {
+            string sql = @"
+        SELECT
+            cu.name                              AS CustomerName,
+            c.contractID                         AS ContractID,
+            rp.policyname                        AS PolicyName,
+            c.bookingDate                        AS BookingDate,
+            COALESCE(c.actualReturnDate, c.expectedReturnDate) AS ReturnDate,
+            v.brand                              AS Brand,
+            v.model                              AS ModelType,
+
+            p.paymentID                          AS PaymentID,
+            p.amount                             AS DepositAmount,
+            d.depositID                          AS DepositID,
+            d.charges                            AS Charges,
+            d.damageFee                          AS DamageFee,
+            d.amount                             AS RefundedAmount,
+            d.status                             AS DepositStatus
+        FROM contracts c
+        JOIN customer      cu ON cu.customerID     = c.customerID
+        JOIN rentalpolicy  rp ON rp.rentalpolicyID = c.policyID
+        LEFT JOIN rentedvehicles rv ON rv.contractID = c.contractID
+        LEFT JOIN vehicle        v  ON v.vehicleID   = rv.vehicleID
+        LEFT JOIN payment p ON p.contractID = c.contractID
+        LEFT JOIN deposit d ON d.paymentID  = p.paymentID
+        ORDER BY c.contractID DESC, v.vehicleID;
+    ";
+
+            using (var cmd = new MySqlCommand(sql, Connection))
+            using (var da = new MySqlDataAdapter(cmd))
+            {
+                DataTable dt = new DataTable();
+                da.Fill(dt);
+                return dt;
+            }
+        }
+        public static DataTable GetCurrentRentals()
+        {
+            string sql = @"
+        SELECT
+            rv.vehicleID   AS RentalID,
+            cu.name        AS CustomerName,
+            v.vehicleID    AS VehicleID,
+            v.brand        AS Brand,
+            v.model        AS Model,
+            v.plateNo      AS PlateNo,
+            c.bookingDate  AS BookingDate
+        FROM contracts c
+        JOIN customer       cu ON cu.customerID = c.customerID
+        JOIN rentedvehicles rv ON rv.contractID = c.contractID
+        JOIN vehicle        v  ON v.vehicleID   = rv.vehicleID
+        ORDER BY c.contractID DESC, v.vehicleID;
+    ";
+
+            using (var cmd = new MySqlCommand(sql, Connection))
+            using (var da = new MySqlDataAdapter(cmd))
+            {
+                DataTable dt = new DataTable();
+                da.Fill(dt);
+                return dt;
+            }
+        }
+
+        public static bool ContractAlreadyReturned(int contractId)
+        {
+            const string sql = @"
+        SELECT COUNT(*)
+        FROM contracts
+        WHERE contractID = @id
+          AND actualReturnDate IS NOT NULL;";
+
+            using (var cmd = new MySql.Data.MySqlClient.MySqlCommand(sql, Connection))
+            {
+                cmd.Parameters.AddWithValue("@id", contractId);
+
+                object result = cmd.ExecuteScalar();
+                int count = (result == null || result == DBNull.Value)
+                            ? 0
+                            : Convert.ToInt32(result);
+
+                // true  = contract already has an actualReturnDate
+                // false = still open
+                return count > 0;
+            }
+        }
+        public static DataTable GetVehicleParts(int vehicleId)
+        {
+            string sql = @"
+        SELECT partsID, partName
+        FROM parts
+        WHERE vehicleID = @vehicleID
+        ORDER BY partName;
+    ";
+
+            using (var cmd = new MySqlCommand(sql, Connection))
+            {
+                cmd.Parameters.AddWithValue("@vehicleID", vehicleId);
+
+                using (var da = new MySqlDataAdapter(cmd))
+                {
+                    DataTable dt = new DataTable();
+                    da.Fill(dt);
+                    return dt;
+                }
+            }
+        }
+        public static void UpdatePartStatus(int vehicleId, string partName, string status)
+        {
+            const string sql = @"
+        UPDATE parts
+        SET status = @status
+        WHERE vehicleID = @vehicleID
+          AND partName  = @partName;
+    ";
+
+            using (var cmd = new MySqlCommand(sql, Connection))
+            {
+                cmd.Parameters.AddWithValue("@status", status);
+                cmd.Parameters.AddWithValue("@vehicleID", vehicleId);
+                cmd.Parameters.AddWithValue("@partName", partName);
+                cmd.ExecuteNonQuery();
+            }
+        }
+        public static bool UpdatePartStatusById(int partsId, string status)
+        {
+            const string sql = @"
+        UPDATE parts
+        SET status = @status
+        WHERE partsID = @partsID;
+    ";
+
+            using (var cmd = new MySqlCommand(sql, Connection))
+            {
+                cmd.Parameters.AddWithValue("@status", status);
+                cmd.Parameters.AddWithValue("@partsID", partsId);
+                return cmd.ExecuteNonQuery() > 0;
             }
         }
 

@@ -148,7 +148,7 @@ namespace CarRentalsSystem
             }
         }
 
-        // Prevent non-digit input (for phone/license fields)
+      
         private void DigitsOnly_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (char.IsControl(e.KeyChar)) return;
@@ -158,7 +158,7 @@ namespace CarRentalsSystem
             }
         }
 
-        // basic email regex
+       
         private bool IsValidEmail(string email)
         {
             if (string.IsNullOrWhiteSpace(email)) return false;
@@ -205,9 +205,7 @@ namespace CarRentalsSystem
                 string secondaryPhone = secondaryPhoneNo.Text.Trim();
                 string email = EmailBox.Text.Trim();
 
-                // ============================
-                //   BASIC REQUIRED FIELDS
-                // ============================
+                
 
                 if (string.IsNullOrWhiteSpace(name) ||
                     string.IsNullOrWhiteSpace(address) ||
@@ -225,9 +223,7 @@ namespace CarRentalsSystem
                     return;
                 }
 
-                // ============================
-                //   LICENSE DUPLICATE CHECK
-                // ============================
+               
 
                 if (dbQuery.LicenseExists(licenseNo))
                 {
@@ -236,9 +232,8 @@ namespace CarRentalsSystem
                     return;
                 }
 
-                // ============================
-                //   AGE VALIDATION (>= 18)
-                // ============================
+               
+               
 
                 int age = DateTime.Now.Year - dob.Year;
                 if (dob > DateTime.Now.AddYears(-age)) age--;
@@ -250,10 +245,7 @@ namespace CarRentalsSystem
                     return;
                 }
 
-                // ============================
-                //   PHONE VALIDATION
-                // ============================
-                // keep only digits
+              
                 string primaryDigits = new string(primaryPhone.Where(char.IsDigit).ToArray());
 
                 if (primaryDigits.Length != 11)
@@ -283,9 +275,7 @@ namespace CarRentalsSystem
                     }
                 }
 
-                // ============================
-                //   EMAIL VALIDATION
-                // ============================
+               
 
                 if (!string.IsNullOrWhiteSpace(email) && !IsValidEmail(email))
                 {
@@ -294,9 +284,7 @@ namespace CarRentalsSystem
                     return;
                 }
 
-                // ============================
-                //   INSERT INTO DATABASE
-                // ============================
+               
 
                 int newCustomerId = dbQuery.AddCustomer(name, dob, gender, address, licenseNo);
 
@@ -307,22 +295,19 @@ namespace CarRentalsSystem
                     return;
                 }
 
-                // primary contact
+               
                 bool primaryContactAdded =
                     dbQuery.AddContact(primaryDigits,
                                        string.IsNullOrWhiteSpace(email) ? null : email,
                                        newCustomerId);
 
-                // secondary contact (optional)
+               
                 bool secondaryContactAdded = true;
                 if (!string.IsNullOrWhiteSpace(secondaryDigits))
                 {
                     secondaryContactAdded = dbQuery.AddContact(secondaryDigits, null, newCustomerId);
                 }
 
-                // ============================
-                //   RESULT MESSAGES
-                // ============================
 
                 if (!primaryContactAdded)
                 {
@@ -345,9 +330,8 @@ namespace CarRentalsSystem
                     this.Hide();
                 }
 
-                // ============================
-                //   CLEAR FIELDS
-                // ============================
+              
+
                 NamebOx.Clear();
                 addressBox.Clear();
                 LicenseBox.Clear();
